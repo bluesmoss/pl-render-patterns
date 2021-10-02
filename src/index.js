@@ -5,10 +5,7 @@ import App from './App';
 
 
 ReactDOM.render(
-  // <App saludo="Buenas" />,
-  <App>
-    bUENASee
-  </App>,
+  <App/>,
   document.getElementById('root')
 );
 
