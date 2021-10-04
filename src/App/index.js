@@ -10,27 +10,51 @@ import { AppUI } from './AppUI';
 
 
 function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName)
-  let parsedItem;
-  
-  if(!localStorageItem){
-    localStorage.setItem(itemName, JSON.stringify(initialValue))
-    parsedItem = []
-  } else {
-    parsedItem = JSON.parse(localStorageItem)
-  }
 
-  const [item, setItem] = React.useState(parsedItem);
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState(false)
+  const [item, setItem] = React.useState(initialValue);
+
+  React.useEffect( ()=>{
+    setTimeout(() => {
+      try{
+        const localStorageItem = localStorage.getItem(itemName)
+        let parsedItem;
+        
+        if(!localStorageItem){
+          localStorage.setItem(itemName, JSON.stringify(initialValue))
+          parsedItem = []
+        } else {
+          parsedItem = JSON.parse(localStorageItem)
+        }
+  
+        setItem(parsedItem)
+        setLoading(false)
+  
+      } catch (error) {
+        setError(error)
+      }
+    }, 1000)
+  })
+
+
+
 
   const saveItem = (newItem) => {
-    localStorage.setItem(itemName, JSON.stringify(newItem))
-    setItem(newItem)
+    try{
+      localStorage.setItem(itemName, JSON.stringify(newItem))
+      setItem(newItem)      
+    } catch(error){
+      setError(error)
+    }
   }
 
-  return [
+  return {
     item,
-    saveItem
-  ]
+    saveItem,
+    loading,
+    error
+  }
   
 }
 
@@ -38,7 +62,7 @@ function useLocalStorage(itemName, initialValue) {
 function App() {
 
 
-  const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
+  const {item: todos, saveItem:saveTodos, loading, error} = useLocalStorage('TODOS_V1', []);
 
   const [searchValue, setSearchValue] = React.useState('')
   
@@ -74,7 +98,15 @@ function App() {
     newTodos.splice(todoIndex,1)
     saveTodos(newTodos)
   }  
+
+  // console.log('Render antes se effects');
   
+  // React.useEffect(()=> {
+  //   console.log('use effects');
+  // }, [totalTodos])
+
+  // console.log('Render despues de use effects');
+
 
   return (
     <AppUI 
@@ -84,7 +116,9 @@ function App() {
       setSearchValue={setSearchValue}
       searchedTodos={searchedTodos}
       completeTodo={completeTodo}
-      deleteTodo={deleteTodo}    
+      deleteTodo={deleteTodo}
+      loading={loading}
+      error= {error}
     />
   );
 }
