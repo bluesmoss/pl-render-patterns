@@ -19,12 +19,14 @@ function AppUI() {
     openModal,
     setOpenModal,
     totalTodos, 
-    completedTodos} = React.useContext(TodoContext)
+    completedTodos,
+    searchValue, 
+    setSearchValue} = React.useContext(TodoContext)
 
     return (
         <React.Fragment>
         <TodoCounter totalTodos={totalTodos} completedTodos={completedTodos} />
-        <TodoSearch />
+        <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue}/>
 
         <TodoList>
             {error && <p>Hubo un error....</p>}
