@@ -7,6 +7,7 @@ import { CreateTodoButton } from  '../components/CreateTodoButton'
 import { TodoContext } from '../TodoContext'
 import { Modal } from '../components/Modal'
 import { TodoForm } from '../components/TodoForm'
+import { TodoHeader } from "../components/TodoHeader";
 
 function AppUI() {
 
@@ -25,8 +26,10 @@ function AppUI() {
 
     return (
         <React.Fragment>
-        <TodoCounter totalTodos={totalTodos} completedTodos={completedTodos} />
-        <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue}/>
+        <TodoHeader>
+          <TodoCounter totalTodos={totalTodos} completedTodos={completedTodos} />
+          <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue}/>      
+        </TodoHeader>
 
         <TodoList>
             {error && <p>Hubo un error....</p>}
