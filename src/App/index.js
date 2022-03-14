@@ -34,8 +34,42 @@ function App() {
         <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue}/>      
       </TodoHeader>
 
-      <TodoList>
-          {error && <p>Hubo un error....</p>}
+      <TodoList
+        error = {error}
+        loading = {loading}
+        searchedTodos = {searchedTodos}
+        searchText={searchValue}
+        totalTodos={totalTodos}
+        onError={() =>  <p>Hubo un error....</p>}
+        onLoading={() =>  <p>Loading....</p>}
+        onEmptyTodos={() =>  <p>Creat tu primer todo</p>}
+        onEmptySearchResults={(searchText) =>  <p>No hay resultados para: {searchText}</p>}
+        render={todo => (
+          <TodoItem
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={()=> deleteTodo(todo.text)}
+          />
+        )}
+      >
+
+      {/* {
+        todo => (
+          <TodoItem
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={()=> deleteTodo(todo.text)}
+          />
+        )
+      } */}
+      </TodoList>
+
+      {/* <TodoList>
+          {error && <p>error....</p>}}
           {loading && <p>Loading....</p>}
           {(!loading && !searchedTodos.length) && <p>Creat tu primer todo</p>}
 
@@ -48,7 +82,7 @@ function App() {
               onDelete={()=> deleteTodo(todo.text)}
             />
           ))}
-      </TodoList>
+      </TodoList> */}
 
       { !!openModal && (
         <Modal>
