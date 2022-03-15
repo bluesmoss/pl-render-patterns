@@ -53,7 +53,7 @@ function App() {
         onLoading={() =>  <p>Loading....</p>}
         onEmptyTodos={() =>  <p>Creat tu primer todo</p>}
         onEmptySearchResults={(searchText) =>  <p>No hay resultados para: {searchText}</p>}
-        render={todo => (
+        render={(todo, item) => (
           <TodoItem
             key={todo.text}
             text={todo.text}
